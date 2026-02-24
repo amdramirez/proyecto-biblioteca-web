@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Biblioteca del Conocimiento Universitario - Inicio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="./img/logo.jpg?height=50&width=50" alt="Logo Universidad">
+                <h1>La Biblioteca del Conocimiento Universitario</h1>
+            </div>
+            
+            <!-- Search Bar en Header -->
+            <div class="header-search">
+                <form method="GET" action="catalogo-libros.jsp" class="search-form">
+                    <input type="text" name="busqueda" placeholder="Buscar libros, autores..." class="header-search-input">
+                    <button type="submit" class="header-search-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            
+            <nav class="nav" id="main-nav">
+                <!-- La navegación se cargará dinámicamente -->
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="hero">
+                <h2>Bienvenido a la Biblioteca del Conocimiento Universitario</h2>
+                <p>Explora nuestra colección de recursos bibliográficos</p>
+                <div class="hero-actions">
+                    <a href="catalogo-libros.jsp" class="btn btn-primary">Explorar Catálogo</a>
+                    <a href="login.html" class="btn btn-outline" id="login-action">Iniciar Sesión</a>
+                </div>
+            </section>
+
+            <section class="quick-search">
+                <h3>Búsqueda Rápida</h3>
+                <form method="GET" action="catalogo-libros.jsp" class="quick-search-form">
+                    <div class="search-filters">
+                        <select name="sede" class="filter-select">
+                            <option value="">Todas las sedes</option>
+                            <option value="0">Sede Central</option>
+                            <option value="2">Sede Este</option>
+                            <option value="3">Sede Oeste</option>
+                            <option value="4">Sede Norte</option>
+                        </select>
+                        
+                        <select name="categoria" class="filter-select">
+                            <option value="">Todas las categorías</option>
+                            <option value="Literatura">Literatura</option>
+                            <option value="Ciencias">Ciencias</option>
+                            <option value="Historia">Historia</option>
+                            <option value="Tecnología">Tecnología</option>
+                            <option value="Arte">Arte</option>
+                        </select>
+                        
+                        <input type="text" name="busqueda" placeholder="Título del libro..." class="search-input">
+                        <button type="submit" class="btn btn-primary">Buscar</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Libros Destacados desde la Base de Datos -->
+            <section class="featured-books">
+                <h3>Libros Destacados</h3>
+                <div class="books-grid" id="featured-books-container">
+                    <!-- Los libros se cargarán dinámicamente -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: biblioteca@universidad.edu</p>
+                    <p>Teléfono: +507 123-4567</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Horarios</h3>
+                    <p>Lunes a Viernes: 7:00 AM - 9:00 PM</p>
+                    <p>Sábados: 8:00 AM - 5:00 PM</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Sedes</h3>
+                    <p>Sede Central - Panamá</p>
+                    <p>Sede Este - Darién</p>
+                    <p>Sede Oeste - Panamá Oeste</p>
+                    <p>Sede Norte - Panamá</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cargar navegación dinámica
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNavigation();
+            loadFeaturedBooks();
+        });
+
+        function loadNavigation() {
+            fetch('api/check-session.jsp')
+                .then(response => response.json())
+                .then(data => {
+                    const nav = document.getElementById('main-nav');
+                    const loginAction = document.getElementById('login-action');
+                    
+                    if (data.authenticated) {
+                        // Usuario autenticado
+                        let navHTML = '<a href="index.html" class="nav-link active">Inicio</a>';
+                        navHTML += '<a href="catalogo-libros.jsp" class="nav-link">Catálogo</a>';
+                        
+                        if (data.userType === 'bibliotecario') {
+                            navHTML += '<a href="panel-bibliotecario.jsp" class="nav-link">Panel Bibliotecario</a>';
+                        } else {
+                            navHTML += '<a href="panel-usuario.jsp" class="nav-link">Mi Panel</a>';
+                        }
+                        
+                        nav.innerHTML = navHTML;
+                        
+                        // Cambiar el botón de acción del hero
+                        if (data.userType === 'bibliotecario') {
+                            loginAction.href = 'panel-bibliotecario.jsp';
+                            loginAction.textContent = 'Ir a Panel';
+                        } else {
+                            loginAction.href = 'panel-usuario.jsp';
+                            loginAction.textContent = 'Mi Panel';
+                        }
+                    } else {
+                        // Usuario no autenticado
+                        nav.innerHTML = `
+                            <a href="index.html" class="nav-link active">Inicio</a>
+                            <a href="catalogo-libros.jsp" class="nav-link">Catálogo</a>
+                            <a href="login.html" class="nav-link">Login</a>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking session:', error);
+                    // Fallback para usuarios no autenticados
+                    const nav = document.getElementById('main-nav');
+                    nav.innerHTML = `
+                        <a href="index.html" class="nav-link active">Inicio</a>
+                        <a href="catalogo-libros.jsp" class="nav-link">Catálogo</a>
+                        <a href="login.html" class="nav-link">Login</a>
+                    `;
+                });
+        }
+
+        function loadFeaturedBooks() {
+            fetch('api/libros-destacados.jsp')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('featured-books-container').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error cargando libros destacados:', error);
+                    document.getElementById('featured-books-container').innerHTML = 
+                        '<p>Error al cargar los libros destacados.</p>';
+                });
+        }
+    </script>
+</body>
+</html>

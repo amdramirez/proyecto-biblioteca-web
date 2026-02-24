@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - La Biblioteca del Conocimiento Universitario</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="./img/logo.jpg?height=50&width=50" alt="Logo Universidad">
+                <h1>La Biblioteca del Conocimiento Universitario</h1>
+            </div>
+            
+            <!-- Search Bar en Header -->
+            <div class="header-search">
+                <form method="GET" action="catalogo-libros.jsp" class="search-form">
+                    <input type="text" name="busqueda" placeholder="Buscar libros, autores..." class="header-search-input">
+                    <button type="submit" class="header-search-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="catalogo-libros.jsp" class="nav-link">Catálogo</a>
+                <a href="login.html" class="nav-link active">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="showLogin(this)">Iniciar Sesión</button>
+                    <button class="tab-btn" onclick="showRegister(this)">Registrarse</button>
+                </div>
+
+                <!-- Mostrar mensajes de error -->
+                <div id="message-container"></div>
+
+                <!-- Formulario de Login -->
+                <div id="login-form" class="auth-form">
+                    <h2>Iniciar Sesión</h2>
+                    <form action="login-process.jsp" method="POST">
+                        <div class="form-group">
+                            <label for="login-email">Correo Electrónico:</label>
+                            <input type="email" id="login-email" name="email" required placeholder="ejemplo@correo.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">Contraseña:</label>
+                            <input type="password" id="login-password" name="password" required placeholder="Ingrese su contraseña">
+                        </div>
+                        <div class="form-group">
+                            <label for="user-type">Tipo de Usuario:</label>
+                            <select id="user-type" name="tipo" required>
+                                <option value="">Seleccionar tipo de usuario...</option>
+                                <option value="estudiante">Estudiante</option>
+                                <option value="bibliotecario">Bibliotecario</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                        
+                        <div class="login-help">
+                            <p>¿No tienes cuenta? <a href="#" onclick="showRegister()">Regístrate aquí</a></p>
+                            <div class="demo-accounts">
+                                <h4>Cuentas de Prueba:</h4>
+                                <p><strong>Estudiante:</strong> example@gmail.com / 123</p>
+                                <p><strong>Bibliotecario:</strong> Ana.Martinez@correo.com / wsrg421GH</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Formulario de Registro -->
+                <div id="register-form" class="auth-form hidden">
+                    <h2>Registrarse</h2>
+                    <form action="registro-process.jsp" method="POST">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reg-nombre">Nombre:</label>
+                                <input type="text" id="reg-nombre" name="nombre" required placeholder="Tu nombre">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-apellido">Apellido:</label>
+                                <input type="text" id="reg-apellido" name="apellido" required placeholder="Tu apellido">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reg-fecha-nac">Fecha de Nacimiento:</label>
+                            <input type="date" id="reg-fecha-nac" name="fecha_nacimiento" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reg-carrera">Carrera:</label>
+                                <select id="reg-carrera" name="carrera" required>
+                                    <option value="">Seleccionar carrera...</option>
+                                    <!-- Las carreras se cargarán dinámicamente -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-sede">Sede:</label>
+                                <select id="reg-sede" name="sede" required>
+                                    <option value="">Seleccionar sede...</option>
+                                    <!-- Las sedes se cargarán dinámicamente -->
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reg-telefono">Teléfono:</label>
+                                <input type="tel" id="reg-telefono" name="telefono" required placeholder="60000000">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-email">Correo Electrónico:</label>
+                                <input type="email" id="reg-email" name="email" required placeholder="ejemplo@correo.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reg-password">Contraseña:</label>
+                            <input type="password" id="reg-password" name="password" required placeholder="Ingrese una contraseña">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Registrarse</button>
+                        
+                        <div class="login-help">
+                            <p>¿Ya tienes cuenta? <a href="#" onclick="showLogin()">Inicia sesión aquí</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: biblioteca@universidad.edu</p>
+                    <p>Teléfono: +507 123-4567</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Horarios</h3>
+                    <p>Lunes a Viernes: 7:00 AM - 9:00 PM</p>
+                    <p>Sábados: 8:00 AM - 5:00 PM</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Sedes</h3>
+                    <p>Sede Central - Panamá</p>
+                    <p>Sede Este - Darién</p>
+                    <p>Sede Oeste - Panamá Oeste</p>
+                    <p>Sede Norte - Panamá</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showLogin(element) {
+            document.getElementById("login-form").classList.remove("hidden");
+            document.getElementById("register-form").classList.add("hidden");
+            
+            // Actualizar tabs
+            document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+            if (element) {
+                element.classList.add("active");
+            } else {
+                document.querySelector(".tab-btn").classList.add("active");
+            }
+        }
+
+        function showRegister(element) {
+            document.getElementById("login-form").classList.add("hidden");
+            document.getElementById("register-form").classList.remove("hidden");
+            
+            // Actualizar tabs
+            document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+            if (element) {
+                element.classList.add("active");
+            } else {
+                document.querySelectorAll(".tab-btn")[1].classList.add("active");
+            }
+            
+            // Cargar datos dinámicos para el registro
+            loadCarreras();
+            loadSedes();
+        }
+
+        function loadCarreras() {
+            console.log('Cargando carreras...');
+            fetch('api/get-carreras.jsp')
+                .then(response => {
+                    console.log('Respuesta carreras:', response.status);
+                    return response.text();
+                })
+                .then(html => {
+                    console.log('HTML carreras:', html);
+                    const select = document.getElementById('reg-carrera');
+                    if (select) {
+                        select.innerHTML = '<option value="">Seleccionar carrera...</option>' + html;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error cargando carreras:', error);
+                    const select = document.getElementById('reg-carrera');
+                    if (select) {
+                        select.innerHTML = '<option value="">Error al cargar carreras</option>';
+                    }
+                });
+        }
+
+        function loadSedes() {
+            console.log('Cargando sedes...');
+            fetch('api/get-sedes.jsp')
+                .then(response => {
+                    console.log('Respuesta sedes:', response.status);
+                    return response.text();
+                })
+                .then(html => {
+                    console.log('HTML sedes:', html);
+                    const select = document.getElementById('reg-sede');
+                    if (select) {
+                        select.innerHTML = '<option value="">Seleccionar sede...</option>' + html;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error cargando sedes:', error);
+                    const select = document.getElementById('reg-sede');
+                    if (select) {
+                        select.innerHTML = '<option value="">Error al cargar sedes</option>';
+                    }
+                });
+        }
+
+        // Mostrar mensajes de error/éxito
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            const success = urlParams.get('success');
+            const messageContainer = document.getElementById('message-container');
+            
+            if (error) {
+                let message = '';
+                switch(error) {
+                    case 'usuario_no_encontrado':
+                        message = 'Correo electrónico no encontrado o no corresponde a un estudiante';
+                        break;
+                    case 'bibliotecario_no_encontrado':
+                        message = 'Correo electrónico no encontrado o no corresponde a un bibliotecario';
+                        break;
+                    case 'contraseña_incorrecta':
+                        message = 'Contraseña incorrecta';
+                        break;
+                    case 'tipo_usuario_invalido':
+                        message = 'Tipo de usuario no válido';
+                        break;
+                    default:
+                        message = 'Error: ' + decodeURIComponent(error);
+                }
+                messageContainer.innerHTML = '<div class="error-message">' + message + '</div>';
+            }
+            
+            if (success) {
+                let message = '';
+                switch(success) {
+                    case 'registro':
+                        message = 'Registro exitoso. Ya puedes iniciar sesión.';
+                        break;
+                    case 'logout':
+                        message = 'Sesión cerrada correctamente.';
+                        break;
+                    default:
+                        message = 'Operación exitosa';
+                }
+                messageContainer.innerHTML = '<div class="success-message">' + message + '</div>';
+            }
+        });
+    </script>
+</body>
+</html>
