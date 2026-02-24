@@ -1,2 +1,15 @@
-# proyecto-biblioteca-web
-Sistema de base de datos para biblioteca universitaria con normalización, claves primarias y foráneas, y automatización mediante SQL/PLSQL.
+# Sistema de Biblioteca Web
+
+Proyecto académico desarrollado como prototipo de sistema de biblioteca con conexión a base de datos.
+
+## Tecnologías utilizadas
+- HTML
+- CSS
+- Java
+- MySQL
+
+## Funcionalidades
+- Registro de usuarios
+- Inicio de sesión
+- Gestión de libros
+- Conexión a base de datos
